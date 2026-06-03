@@ -1,0 +1,13 @@
+domain,url,final_url,ok,chars,reason,text_path
+tilipussi.fi,https://www.tilipussi.fi,https://www.tilipussi.fi/,True,3615,ok,scraped/tilipussi.fi.txt
+akyllonen.fi,https://www.akyllonen.fi,https://www.akyllonen.fi/,True,26,ok,scraped/akyllonen.fi.txt
+isannointijukola.com,https://www.isannointijukola.com,https://isannointijukola.com/index.html,True,2959,ok,scraped/isannointijukola.com.txt
+pko-toimistopalvelut.fi,https://www.pko-toimistopalvelut.fi,https://www.pko-toimistopalvelut.fi/,True,5170,ok,scraped/pko-toimistopalvelut.fi.txt
+kuhmonputkityo.fi,https://www.kuhmonputkityo.fi,https://www.kuhmonputkityo.fi/,True,212,ok,scraped/kuhmonputkityo.fi.txt
+geobotnia.fi,https://www.geobotnia.fi,https://geobotnia.fi/,True,309,ok,scraped/geobotnia.fi.txt
+rantakalla.fi,https://rantakalla.fi/,https://rantakalla.fi/,True,319,ok,scraped/rantakalla.fi.txt
+ecce-re.fi,https://www.ecce-re.fi,https://www.ecce-re.fi/,True,302,ok,scraped/ecce-re.fi.txt
+sparbanksstiftelserna.fi,https://www.vora.sparbanksstiftelserna.fi/sv/start/,https://www.vora.sparbanksstiftelserna.fi/sv/start/,True,277,ok,scraped/sparbanksstiftelserna.fi.txt
+kuhmonbetoni.fi,https://www.ybt.fi/,https://www.ybt.fi/,True,1387,ok,scraped/kuhmonbetoni.fi.txt
+kalajoenlampo.fi,https://www.kalajoenlampo.fi,https://www.kalajoenlampo.fi/,True,188,ok,scraped/kalajoenlampo.fi.txt
+hongisto.fi,https://www.hongisto.fi,https://hongisto.fi/,True,2506,ok,scraped/hongisto.fi.txt
