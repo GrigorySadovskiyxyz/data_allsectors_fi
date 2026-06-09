@@ -63,6 +63,7 @@ import csv
 import os
 import re
 import sys
+import time
 from dataclasses import dataclass, asdict
 from typing import Optional
 
@@ -197,6 +198,46 @@ def scrape_one(page, domain: str, url: str, out_dir: str,
 
 
 # --------------------------------------------------------------------------- #
+# Progress display
+# --------------------------------------------------------------------------- #
+
+
+def _fmt_duration(seconds: float) -> str:
+    """Human-readable H:MM:SS (or M:SS) from a number of seconds."""
+    seconds = int(max(0, seconds))
+    h, rem = divmod(seconds, 3600)
+    m, s = divmod(rem, 60)
+    return f"{h}:{m:02d}:{s:02d}" if h else f"{m:d}:{s:02d}"
+
+
+def _render_progress(done: int, total: int, ok: int, started: float,
+                     width: int = 30) -> None:
+    """Draw a one-line carriage-return progress bar to stderr.
+
+    Shows the bar, count done/total (and how many remain), success count,
+    elapsed time, throughput, and an ETA extrapolated from the current rate.
+    """
+    total = max(total, 1)
+    frac = done / total
+    filled = int(width * frac)
+    bar = "#" * filled + "-" * (width - filled)
+
+    elapsed = time.monotonic() - started
+    rate = done / elapsed if elapsed > 0 else 0.0          # sites per second
+    remaining = total - done
+    eta = remaining / rate if rate > 0 else 0.0
+
+    sys.stderr.write(
+        f"\r[{bar}] {done:,}/{total:,} ({frac*100:5.1f}%)  "
+        f"left: {remaining:,}  ok: {ok:,}  "
+        f"elapsed: {_fmt_duration(elapsed)}  "
+        f"eta: {_fmt_duration(eta)}  "
+        f"{rate:4.2f}/s   "
+    )
+    sys.stderr.flush()
+
+
+# --------------------------------------------------------------------------- #
 # Resumable runner
 # --------------------------------------------------------------------------- #
 
@@ -221,6 +262,14 @@ def run(args) -> dict:
     nav_ms = args.nav_timeout * 1000
     idle_ms = args.idle_timeout * 1000
     scraped = ok_count = 0
+    total = len(todo)
+    started = time.monotonic()
+
+    print(f"{len(done):,} already scraped | {total:,} still to go "
+          f"(of {len(todo_all):,} accessible domains)", file=sys.stderr)
+    if total == 0:
+        print("nothing left to scrape -- all accessible domains are done.",
+              file=sys.stderr)
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
@@ -245,19 +294,21 @@ def run(args) -> dict:
                 fh.flush()  # stay resumable even if killed mid-run
                 scraped += 1
                 ok_count += int(res.ok)
-                if scraped % 25 == 0:
-                    print(f"  scraped {scraped:,}/{len(todo):,}  "
-                          f"(ok so far: {ok_count:,})", file=sys.stderr)
+                _render_progress(scraped, total, ok_count, started)
         finally:
             context.close()
             browser.close()
             fh.close()
+            if total:
+                sys.stderr.write("\n")  # leave the final progress line intact
 
+    elapsed = time.monotonic() - started
     return {
         "accessible_domains": len(todo_all),
         "already_done": len(done),
         "scraped_this_run": scraped,
         "ok_this_run": ok_count,
+        "elapsed_seconds": elapsed,
     }
 
 
@@ -293,6 +344,10 @@ def main(argv: Optional[list[str]] = None) -> int:
     print(f"already scraped (skipped)       : {s['already_done']:,}")
     print(f"scraped this run                : {s['scraped_this_run']:,}")
     print(f"  of which succeeded            : {s['ok_this_run']:,}")
+    elapsed = s["elapsed_seconds"]
+    rate = s["scraped_this_run"] / elapsed if elapsed > 0 else 0.0
+    print(f"execution time                  : {_fmt_duration(elapsed)} "
+          f"({rate:.2f} sites/s)")
     print(f"\ntext files in {args.out}/  | index: "
           f"{args.index or os.path.join(args.out, 'scraped_index.csv')}")
     return 0

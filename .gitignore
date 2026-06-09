@@ -1,0 +1,19 @@
+# Scraped page text — kept locally in Codespaces, not published to GitHub
+scraped/*.txt
+
+# Keep the scrape index tracked
+!scraped/scraped_index.csv
+
+# Paper prompt-logging sidecar state (not meaningful to track)
+paper/.pending_prompt.txt
+paper/.logged_prompt.txt
+
+# Large scraper data files — kept locally, excluded so the repo imports into
+# Overleaf (Overleaf rejects files over 50 MB and limits total project size).
+all_companies.zip
+manifest.json
+manifest.csv
+accessibility.csv
+
+# Python bytecode cache
+__pycache__/

@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '\"\\n- \" + .prompt' >> /workspaces/data_allsectors_fi/prompts.md 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.prompt' > /workspaces/data_allsectors_fi/paper/.pending_prompt.txt 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | { read -r f; case \"$f\" in */paper/*.tex|*/paper/*.bib) python /workspaces/data_allsectors_fi/paper/log_paper_prompt.py --on-edit ;; esac; } 2>/dev/null || true",
+            "statusMessage": "Logging paper prompt"
+          }
+        ]
+      }
+    ]
+  }
+}
