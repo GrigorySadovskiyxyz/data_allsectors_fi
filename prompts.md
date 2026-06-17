@@ -23,3 +23,25 @@ A running record of the textual prompts given in this project.
 - Hide in gitignore big files so I am able to import it to overleaf
 
 - yes commit and push it
+
+- I got all the data scraped and I want to calculate all the accesseble domains and ratio to the whole links I have in the company list. Save this info in separate markdown file.
+
+- tokens
+
+- Everything you mentioned for translation (do API claude call).
+
+- my api key = <ANTHROPIC_API_KEY redacted — set via the ANTHROPIC_API_KEY env var> and use claude haiku for translation and claude opus for reasoning for innovative or not
+
+- Now choose haiku 4.5 for everything because it is cheaper
+
+- ping me when the batches are done and how many left still
+
+- can you pause and show what you have done so far
+
+- Count how my symbols are in every text file for the analysis
+
+- Save this info to .md file  and please make a separate collection with already scraped English only websites and calculate how many of those. If you see Finnish scraped text just discard it.
+
+- Now I need in english_only corpus perform basic text cleaning and do this sort of table Table 4 " Summary statistics for text length. Variable Definition Mean Std Min Max Char_clean Number of characters after text cleaning 3757 5275 5 123 299 Words_clean Number of words after text cleaning 460 634 1 13 946 Tokens Numeric representations of characters 915 1252 1 26 696" but with my numbers counted from my corpus.
+
+- Publish this to github without scrape data (ignore it).

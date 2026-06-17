@@ -1,0 +1,6 @@
+domain,source_path,translated_path,chars_in,chars_out,parts,status,batch_id
+tilipussi.fi,scraped/tilipussi.fi.txt,translated/tilipussi.fi.txt,3794,3932,1,ok,msgbatch_019KayiJgB5GKB5nNrjmNJ6U
+akyllonen.fi,scraped/akyllonen.fi.txt,translated/akyllonen.fi.txt,26,32,1,ok,msgbatch_019KayiJgB5GKB5nNrjmNJ6U
+isannointijukola.com,scraped/isannointijukola.com.txt,translated/isannointijukola.com.txt,3106,3287,1,ok,msgbatch_019KayiJgB5GKB5nNrjmNJ6U
+pko-toimistopalvelut.fi,scraped/pko-toimistopalvelut.fi.txt,translated/pko-toimistopalvelut.fi.txt,5468,5675,1,ok,msgbatch_019KayiJgB5GKB5nNrjmNJ6U
+kuhmonputkityo.fi,scraped/kuhmonputkityo.fi.txt,translated/kuhmonputkityo.fi.txt,225,279,1,ok,msgbatch_019KayiJgB5GKB5nNrjmNJ6U

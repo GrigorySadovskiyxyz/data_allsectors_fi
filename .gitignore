@@ -4,6 +4,12 @@ scraped/*.txt
 # Keep the scrape index tracked
 !scraped/scraped_index.csv
 
+# Corpus text dumps and API batch payloads — derived scrape data, kept local
+english_only/
+translated/
+translation_batches/
+innovation_batches/
+
 # Paper prompt-logging sidecar state (not meaningful to track)
 paper/.pending_prompt.txt
 paper/.logged_prompt.txt
