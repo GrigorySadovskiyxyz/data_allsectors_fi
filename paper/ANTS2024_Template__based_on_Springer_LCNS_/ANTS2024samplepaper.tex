@@ -6,6 +6,8 @@
 \documentclass[runningheads]{llncs}
 %
 \usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
 % T1 fonts will be used to generate the final print and online PDFs,
 % so please use T1 fonts in your manuscript whenever possible.
 % Other font encondings may result in incorrect characters.
@@ -36,74 +38,93 @@
 % these page limits is the reference list, which should have an appropriate 
 % length with respect to the state of the art.
 %
-\title{Contribution Title}
-% Title must be capitalized according to standard 'Title Case' style (i.e., all 
-% words should be capitalized, except for articles, prepositions, and conjunctions).
+\title{From Web Content to Innovation Signals: A Website Innovation Footprint
+Approach to Identifying Innovative Firms in Finland}
 %
-% Any acknowledgements should be located at the end of the paper, in a final 
-% Acknowledgements subsubsection.
-% Do not format acknowledgments as a footnote, anywhere in the paper.
+\titlerunning{Identifying Innovative Finnish Firms with LLMs}
 %
-\titlerunning{Abbreviated paper title}
-% If the paper title is too long for the running head, you can set
-% an abbreviated paper title here.
-% The abbreviated title must also be capitalized according to standard 'Title Case'
-% style (i.e., all words should be capitalized, except for articles, prepositions,
-% and conjunctions).
-% Do not use a \newline command in the abbreviated title.
+\author{Grigorii Sadovskii\inst{1}\orcidID{0000-0000-0000-0000} \and
+Ville Ojanen\inst{1}\orcidID{0000-0000-0000-0000} \and
+Yan Xin\inst{1}\orcidID{0000-0000-0000-0000}\and
+Lea Hannola\inst{1}\orcidID{0000-0000-0000-0000} \and
+Marco Macchi\inst{2}\orcidID{0000-0000-0000-0000}}
 %
+\authorrunning{G. [Surname] et al.}
 %
-\author{First Author\inst{1}\orcidID{0000-1111-2222-3333} \and
-Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
-Third Author\inst{3}\orcidID{2222--3333-4444-5555}}
-% Follow the naming convention in which the surname is the last name.
-% In this field, provide the full first names (not only the initials).
-% Do not include academic titles (e.g., Prof. or Dr.).
-% Springer encourages the inclusion of author ORCIDs.
+\institute{LENS IEM, LUT University, Lappeenranta, Finland\\
+\email{[grigorii.sadovskii]@lut.fi} \and
+Department of Management, Economics and Industrial Engineering,
+Politecnico di Milano, Milan, Italy\\
+\email{marco.macchi@polimi.it}}
 %
-\authorrunning{F. Author et al.}
-% In this field, give the initial of the first name(s) and the full surname.
-% Give the first author's name. If there are precisely two authors, then
-% give both the first and second authors' names (sample: {F. Author and S. Author}).
-% If there are more than two authors, use 'et al.' after the name of the first author.
+\index{Sadovskii, Grigorii}
+\index{Ojanen, Ville}
+\index{Yan, Xin}
+\index{Hannola, Lea}
+\index{Macchi, Marco}
 %
-\institute{Department of Computer Science, School of Engineering and Applied Science,
-Princeton University, Princeton, NJ, USA \and Springer Heidelberg, Heidelberg, Germany
-\email{lncs@springer.com}\\ \and
-ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
-\email{\{abc,lncs\}@uni-heidelberg.de}}
-% Author affiliation information should include the following, using the 
-% \institute{} and \email{} fields: department, faculty, university, 
-% company (if applicable), city, country, and email address. Do not include 
-% the street address or ZIP code (ANTS 2024 does not use a postal address).
-% The email address of the corresponding author is mandatory to include.
-%
-\index{SurnameAuthor1, FirstnameAuthor1}
-\index{SurnameAuthor2, FirstnameAuthor2}
-\index{SurnameAuthor3, FirstnameAuthor3}
-% After the \institute{} entries, include an \index{} entry for each author, 
-% giving the full surname, followed by the full first name(s).
-%
-\maketitle              % typeset the header of the contribution
+\maketitle
 %
 \begin{abstract}
-The abstract should briefly summarize the contents of the paper in
-150--250 words.
-
-%ANTS 2024 does not use keywords in the proceedings.
+Website text-mining has been promoted as a means of overcoming the limitations of
+conventional innovation indicators built on structured surveys, patents, and financial
+records. Yet the validity of such methods is increasingly questioned, with critics
+noting that predictive models tend to exploit incidental keywords rather than
+substantive evidence of innovative activity. This paper advances a theory-informed
+alternative grounded in strategic signalling: the Website Innovation Footprint (WIF), a
+concept introduced to guide the empirical identification of innovative firms from the
+cues they disclose online. Using a sample of [N] Finnish companies---both innovative
+and non-innovative---whose web addresses were obtained from the national business
+register, we find that a fine-tuned, evidence-producing large language model classifies
+firms with [XX]\% accuracy. A TF--IDF representation paired with a Random Forest, by
+comparison, attains [XX]\% accuracy, yet its most influential predictors are only weakly
+aligned with genuine innovation cues. The study contributes to the innovation-mining
+literature by formalising the Website Innovation Footprint and by offering a
+transparent, evidence-based approach to detecting innovative companies.
 \end{abstract}
 %
 %
-%
-\section{First Section}
+\section{1. Introduction}
+
+Innovation occupies a central place in strategy, management, and economics, yet it remains notoriously difficult to measure. Scholarly efforts to quantify it have long been guided, explicitly or implicitly, by the knowledge-production function — the accepted relationship between the inputs devoted to generating knowledge and the new knowledge those inputs yield (Pakes & Griliches, 1980; Bergeaud et al., 2025). Working within this framework, researchers have approximated innovation through three families of proxies: inputs (such as R&D expenditure, research personnel, and an innovative organisational culture), activities (such as in-house R&D and open-innovation practices), and outputs (such as patents, new or modified products, and process introductions). The choice among these proxies dictates the data sources employed. Historically, the field has leaned heavily on structured data — survey responses, patent filings, and financial records (Archibugi & Planta, 1996; Frenz & Ietto-Gillies, 2009; Stundziene et al., 2024) — which have proven indispensable for testing theory, uncovering associations, and maturing the discipline. Innovation policy, in turn, continues to rest on the large cross-country surveys that anchor this tradition, foremost among them the Community Innovation Survey (CIS). These measurement questions are far from academic in an economy such as Finland's: the European Innovation Scoreboard 2025 ranks the country among the EU's four Innovation Leaders, fourth overall at roughly 125% of the EU average, so the accuracy and timeliness with which firm-level innovation is captured bear directly on both research and national policy.
+Yet the structured instruments on which this tradition rests are costly, slow to produce, and limited in coverage, leaving large parts of the firm population unobserved (Rammer & Es-Sadki, 2023). These constraints have motivated a turn toward "text as data" (Gentzkow et al., 2019), and in particular toward the textual content of firm websites as a timely, granular, and population-wide source of innovation signals. Research mining website text with machine learning has predicted firm-level innovation with encouraging accuracy: in the Estonian setting, web data combined with artificial-intelligence methods have been used to predict distinct types of product, process, organisational, and marketing innovation (Sõna et al., 2024), while web-scraped innovation indicators have been constructed for medium- and high-technology firms across the EU-27, in work led from VTT Technical Research Centre of Finland (Ashouri et al., 2022). The advent of large language models has extended this agenda, since recent tech-mining studies use LLMs to identify emerging technologies, map innovation patterns, and classify firms from website content (Pastor-Merino et al., 2025; Bouschery et al., 2023), and LLMs are now increasingly adopted as text-as-data and annotation tools across management and the social sciences (Carlson & Burbano, 2026; Chae & Davidson, 2025). Despite these advances, the validity of such models is increasingly questioned, with critics warning that predictions may hinge on incidental keywords rather than substantive evidence of innovative activity. To confront this concern, the present study grounds its approach in signalling theory (Spence, 1973; Connelly et al., 2011, 2025), treating a firm's website as a deliberate signalling surface and formalising the cues it discloses as a Website Innovation Footprint.
+
+This strand of research has consolidated into several robust insights that together establish firm websites as a distinctive source of innovation data, with properties unlike those of conventional indicators. First, websites carry cues spanning the principal types of innovation: product (Kinne & Lenz, 2021; Sõna et al., 2024), technological (Daas & van der Doef, 2021b), process (Axenbeck & Breithaupt, 2021; Sõna et al., 2024), and marketing innovation (Sõna et al., 2024). They also disclose evidence of innovation-related activities — in-house R&D (Gök et al., 2015), intellectual-property protection, collaboration, and external financing (Héroux-Vaillancourt et al., 2020), as well as the adoption of artificial intelligence (Calvino et al., 2022; Heinrich, 2025). Second, although these online cues correlate only moderately with information drawn from surveys, patents, or financial records, they are typically more prevalent on websites than in those conventional sources (Gök et al., 2015) and, in the case of AI adoption, surface there earlier (Heinrich, 2025); web-scraped indicators have likewise been shown to align with established measures such as R&D expenditure, R&D employment, and patenting activity (Ashouri et al., 2022). Third, supervised classifiers can learn the lexical and structural features that distinguish innovative from non-innovative firms and label large samples from website text alone, with reported accuracies of roughly 65–88\% (Daas & van der Doef, 2021b; Kinne & Lenz, 2021; Sõna et al., 2024). Taken together, these findings present the website as a rich, near-ubiquitous, and timely medium for measuring firm innovation. 
+
+Despite this promise, the innovation-mining literature confronts two persistent challenges. The first is conceptual. There is still little theory explaining why and how innovative firms reveal innovation on their websites. Existing accounts reason that, because websites are customer-facing platforms, product and service innovations ought to be readily visible (Gök et al., 2015), and that innovative capability spills over into the sophistication of a firm's web presence, yielding more elaborate websites (Bottai et al., 2022). Underlying both is the tacit assumption that web content faithfully mirrors a firm's innovation activities and outputs. That assumption is questionable. Websites are deliberately curated communication tools, and an innovative firm may foreground other attributes while disclosing few innovation cues, or none at all. Moreover, because not every cue is costly to imitate, the signals displayed online need not correspond to a firm's underlying capabilities. What is required, then, is an explicit conceptualisation of the relationship between a firm's latent innovative capability and the observable pattern of innovation cues it presents online.
+
+The second challenge is methodological. Standard text-processing pipelines typically reduce website text to keyword lists or bag-of-words representations, or rely on topic modelling (Lu & Chesbrough, 2022), TF–IDF (Kinne & Lenz, 2021), or Word2Vec embeddings (Daas & van der Doef, 2021b), each paired with a downstream classifier. Such representations are largely context-blind and difficult to interpret, making it hard to establish whether predictive performance reflects genuine innovation-related constructs or merely overfitting to incidental lexical regularities, annotation artefacts, or other confounds — a validity concern increasingly raised in methodological work on text-as-data classification (Carlson & Burbano, 2026; Lin & Zhang, 2025). The point is illustrated by Sõna et al. (2024), among the most careful web-mining studies to date, who report that many of the terms their models relied upon to predict innovation bore no substantive relation to it. The consequence is wide and largely unexplained variation in accuracy — from roughly 66\%, barely above chance, to 88\% — across studies. In their own assessment, the relationship was transparent only for marketing innovation, where predictions tracked marketing-related vocabulary, and remained markedly unclear for the other innovation types. Such limitations motivate a move toward context-aware methods capable of producing auditable evidence for their classifications.
+
+These challenges frame the two questions this paper addresses: do firms systematically disclose textual innovation cues on their websites that distinguish innovative from non-innovative firms; and can evidence-producing large language models reliably detect and exploit those cues to classify a firm's innovation status?
+
+
+To resolve these issues, the study adopts strategic signalling theory (Connelly et al., 2011, 2025), which provides a principled account of why and how innovative firms signal their innovativeness through website content. Building on this lens, we introduce the Website Innovation Footprint (WIF) — a construct derived from the ten Oslo Manual dimensions (OECD/Eurostat, 2018) that quantifies the extent to which a firm's website discloses signs of innovation. To examine the construct empirically, a corpus was assembled by web-scraping the websites of [N_web] Finnish companies — the [XX.XX]\% of [N_active] active limited liability companies (osakeyhtiö) whose records in the national business register (PRH/YTJ) carried a website address. From this corpus, a labelled sample of [N] firms was drawn and partitioned into two classes, innovative (n = [n₁]) and non-innovative (n = [n₂]), and subsequently split into training, validation, and test sets. Website text was analysed using two complementary approaches: (1) large language models — Anthropic's Claude Haiku 4.5 applied through prompting, and the open-source Llama-3.2-3B-Instruct fine-tuned on the training data via QLoRA — and (2) a baseline pairing TF–IDF features with a Random Forest classifier, with LIME used to interpret the baseline's predictions.
+
+This research contributes to innovation-measurement research in two ways. First, it introduces the Website Innovation Footprint (WIF) — the observable pattern of innovation-related cues a firm discloses on its website, understood as the product of strategic innovation signalling. Drawing on signalling theory, the study both explains and empirically demonstrates that the WIF serves as a useful, though imperfect, proxy for a firm's latent innovative capabilities. Second, it develops and tests a method for identifying innovative firms that operationalises the Oslo Manual framework through evidence-producing LLMs. The approach quantifies a firm's WIF by determining how many of the ten pre-specified, Oslo-aligned innovation dimensions are present in its website content, so that innovation can be inferred with a confidence that scales with the number of cues detected. Because the LLM is sensitive to word order and syntactic relationships and returns interpretable, auditable evidence for each decision, it offers a promising alternative for website-text-based innovation classification.
+
+The remainder of the paper is organised as follows. Section 2 reviews the prior literature on innovation measurement and website mining. Section 3 develops the Website Innovation Footprint concept. Section 4 sets out the methodological pathway, describing the proposed framework and the techniques used to analyse website data and quantify innovation. Section 5 reports the results — model outputs, predictive performance, and the WIF findings — after which Section 6 discusses these results in relation to the literature and considers their implications. Section 7 outlines limitations and directions for future research, and the paper closes with conclusions.
+
+2. Literature
+
+2.1. Innovation indicators
+
 % Section heading must be capitalized according to standard 'Title Case' style 
 % (i.e., all words should be capitalized, except for articles, prepositions, 
 % and conjunctions).
 % Headings and subheadings should be aligned to the left. 
-See the LNCS Springer authors’ guidelines for details on formatting. 
-In addition, submissions must follow further requirements that are
-specific to the ANTS 2024 proceedings. These requirements are included
-in this ANTS2024samplepaper.tex template.
+
+Innovation can be defined as the introduction, to an external market, of a new product, service, or process, or the adoption, within one or more of a firm's internal units, of a new device, system, programme, or practice (Walker et al., 2015). The former — novelty offered to customers — is conventionally termed product innovation, whereas the latter — novelty implemented inside the organisation — is termed process innovation. Innovative firms, by definition, introduce product and process innovations more frequently than their non-innovative counterparts, yet identifying them is far from straightforward. One difficulty is that evidence of innovation is dispersed across heterogeneous artefacts — corporate documents, reports, financial statements, press releases, and websites — with no standardised obligation to report innovation in the first place. A second is that innovation is relative rather than absolute: a device, system, programme, or practice may be genuinely new to a particular organisation, department, or team while being entirely routine elsewhere. To navigate these difficulties, scholars and innovation-policy institutions have long relied on a mixture of structured and unstructured data and, above all, on a tradition of measuring innovation indirectly through proxies tied to the innovation process. The selection of such proxies rests on the assumed functional relationship between the inputs devoted to generating knowledge and the new knowledge they produce (Pakes & Griliches, 1980; Bergeaud et al., 2025) — a logic widely formalised as the input–process–output model (Haar, 2018), in which firms deploy innovation-related inputs that innovation-related activities convert into innovation outputs. On the input side, R&D expenditure (Pandit et al., 2011), investment in technology such as machinery and equipment (Pavitt, 1985), the employment of R&D personnel (Kang & Lee, 2017), and an innovation-oriented organisational culture (Dobni, 2008) all serve as indicators of firms engaged in innovation.
+
+Which activities convert innovation inputs into outputs depends on the theoretical perspective adopted. Under the traditional, largely closed view, innovation was seen as emerging from in-house research and development, engineering, design, and other creative work, together with intellectual-property protection (Chesbrough, 2003; OECD/Eurostat, 2018). More recent, open-innovation accounts broaden this set considerably, foregrounding network and community building, customer engagement, the formation of partnerships and joint ventures, industry–academia collaboration, and contracting or IP-licensing arrangements (Lu & Chesbrough, 2022). Whichever activities are emphasised, their presence signals that a firm is actively engaged in innovation. The process culminates in innovation outputs, which range from new products and services and improved organisational processes to patents, scientific publications, registered industrial designs, trademarks, copyrights, certifications, and trade secrets (OECD/Eurostat, 2018). Across the input, activity, and output stages alike, scholars treat these elements as proxies for distinguishing innovative from non-innovative firms, drawing on both structured and unstructured data.
+
+2.2. Innovation measurement using structured data
+
+Structured data consists of information arranged in predefined fields and formats, stored directly in files or databases and readily amenable to statistical analysis. Until methods for analysing unstructured data matured over the past decade, innovation was measured chiefly through structured sources — among them surveys, corporate financial and activity reports, industry and macroeconomic statistics, and patent databases. Surveys have been the principal instrument for gathering structured innovation data, since they can capture inputs, activities, and outputs alike. Their distinctive strength is the capacity to establish whether a given product or process improvement is new to the focal organisation, which directly addresses the relativity problem noted above — that the same improvement may count as an innovation for one firm or customer group but not for another. Surveys nonetheless carry well-documented weaknesses (Gök et al., 2015; Bottai et al., 2022; Rammer & Es-Sadki, 2023). Chief among them are response and reporting biases that introduce measurement error (Cirera & Muzi, 2020), and a structural limitation: although surveys are well suited to testing theory, their high implementation cost constrains their ability to deliver population-wide and longitudinal evidence in a timely manner.
+
+A second prominent source of structured innovation data comprises financial statements and macroeconomic statistical databases. These capture primarily innovation inputs — R&D expenditure, intangible assets, R&D human capital, capital investment in technology, and public funding or subsidies — and offer only partial visibility into innovation activities (such as collaborations and alliances) and outputs (such as patents). Their coverage, however, is heavily skewed toward large, typically listed, firms, leaving a substantial portion of the firm population unobserved.
+Patents constitute a third widely used source, this time for innovation outputs, and they remain dominant in practice: a recent review finds that, of the innovation-studies articles published in 2024, 61% relied on patents as an innovation output indicator and a further 34% on survey-based indicators, with few drawing on other sources (Andersen, 2025). Yet patents are an imperfect proxy. They register inventions but capture only a fraction of the new or substantially improved products and processes that firms actually introduce (Griliches, 1990; Jaffe & Trajtenberg, 2002). Moreover, the propensity to patent varies systematically by sector, firm size, and country (Archibugi & Planta, 1996; Dosi et al., 2006): smaller firms patent far less than larger ones — in the European Union, SMEs and individual inventors account for roughly 20% of patent applications, against some 75% filed by large firms — so patent counts considerably understate innovation among smaller enterprises (Morales et al., 2024). Complementing patents with other intellectual-property records such as trademarks has been shown to recover a sizeable share of otherwise unmeasured SME innovation, increasing the count of measured SME innovations by roughly 52% (Morales et al., 2024). 
+
+In sum, the empirical study of innovation continues to rest predominantly on structured data. A recent systematic review by Stundziene et al. (2024), covering 174 articles published in Web of Science-indexed journals between 2010 and 2024, makes the imbalance plain: surveys were the dominant data source (58% of studies), followed by statistical sources such as financial reports and patents (30.3%) and by interviews and expert surveys (11.2%). Strikingly, only 0.5% of the reviewed studies measured innovation using unstructured data processed with machine-learning methods — a near-absence that marks the gap this paper sets out to address.
 
 
 \subsection{A Subsection Sample}
@@ -135,6 +156,232 @@ headings. Table~\ref{tab1} gives a summary of all heading levels.
 
 \section{4. Methodology}
 \subsubsection{4.1. Data collection process}
+
+%The data collection process started in 2024 May and ended in 2024 December. At first, using Lithuania’s company registry all available data about active1 limited liability companies were collected which amounted to 125,897 companies in total. Unfortunately, only 34.37% of all the collected companies had URL website address available, hence the analysis was constrained to this sample. Afterwards, a server was deployed with a web scraping algorithm to collect the document object model (DOM)2 with all its content. The collected HTML content was inspected and any failed site responses like ‘‘Page not Found’’ or ‘‘website is currently not available at the moment’’ were removed from the dataset.
+
+52828 accesseble domains
+
+
+Sampling proceeded in two stages over [month]–[month] 2025. The sampling frame was drawn from Finland's Business Information System (YTJ), the joint register operated by the Finnish Patent and Registration Office (PRH) and the Tax Administration, which we queried through PRH's open-data Trade Register interface (API v3). From this source we retained private limited liability companies (osakeyhtiö, Oy) carrying an active registry status¹ — that is, not flagged for bankruptcy, insolvency or restructuring, liquidation, dissolution, or deregistration — which left [N] firms. A practical advantage of the Finnish register is that each record exposes a structured website field; company URLs were therefore read directly from the official source rather than inferred or harvested through a separate look-up. Of the active firms, [XX.XX]\% disclosed a website, and the empirical analysis necessarily proceeds on this sub-population.²
+
+Each available site was then crawled with a pipeline built on trafilatura and courlan, which captured the homepage together with its first-level internal subpages and parsed the rendered DOM into clean body text. Because automated collection at this scale inevitably surfaces dead or non-informative pages, a quality filter was applied upstream of the corpus: unreachable hosts, parked-domain placeholders, and error responses (for instance "Page Not Found" or service-unavailable notices) were discarded before any text was retained.
+
+Supervised classification requires ground-truth labels, so the next task was to assemble a dependable set of firms that could be designated as innovators, against which non-innovators would later be contrasted. The natural benchmark — the Community Innovation Survey (CIS) — proved unsuitable as a label source, though for different reasons than mere unavailability. In Finland the CIS microdata are curated by Statistics Finland and can be processed only inside the FIONA secure remote-access environment under a research licence; any output leaving that enclave passes a disclosure-control review that guarantees no individual business can be identified from the published data, and the microdata may not be used for administrative, surveillance or other such purposes under the Statistics Act (280/2004). These safeguards, although entirely appropriate, make it infeasible to attach CIS innovation status to named companies and to merge those labels with externally collected website text for a publishable, firm-level classifier. The survey route was therefore set aside in favour of constructing labels from public, firm-identifiable records of innovative activity. 
+
+Positive labels were drawn from several complementary Finnish sources, each web-scraped and reconciled to a business identity code (Y-tunnus): recipients of Business Finland research, development and innovation (RDI) funding, including firms carrying the Young Innovative Company (NIY) designation; members and alumni of leading startup and deep-tech hubs, such as the Maria 01 campus and the Otaniemi ecosystem; Finnish participants in EU-funded innovation projects recorded in CORDIS (Horizon Europe and Horizon 2020); shortlists from national innovation and growth-company awards; and matched records from Statistics Finland's enterprise ICT-usage survey. Business Finland — the state innovation agency — serves as an especially informative anchor: in 2024 it directed 383 million euros to companies for research, development, and innovation purposes, and its awardees are, by the agency's own selection criteria, firms demonstrably engaged in research, development, and product or process innovation.
+
+Among these sources, the Otaniemi deep-tech ecosystem in Espoo — anchored by Aalto University's Startup Center and the European Space Agency's Business Incubation Centre (ESA BIC Finland) — offers a particularly well-curated pool of innovating firms, because admission is competitive and the support it confers is contingent on demonstrable technological merit. Each admitted company is selected through careful tender evaluations, and graduates leave as alumni after an incubation period of roughly one year. ESA BIC Finland, founded in 2017 and funded jointly by ESA and Business Finland, provides incubation funding of up to EUR 90,000 together with up to 80 hours of support from world-class partners, including ESA experts, to early-stage space- and deep-technology firms. Its companies operate in fields adjacent to those of interest here — satellite and Earth-observation applications, advanced materials and electronics, food and green technologies, and software — and the screening value of membership as an innovation signal is underscored by its alumni: 31 companies have passed through the programme, including Solar Foods, Kuva Space, and Aurora Propulsion Technologies, several of which have gone on to ESA commercial projects and to the CASSINI and NATO DIANA accelerators. The surrounding ecosystem rests on dense science–business collaboration: ESA BIC Finland is coordinated by Aalto University's Startup Center in Otaniemi, with the University of Vaasa as a partner and city collaboration across Helsinki, Espoo, Tampere, and Turku.
+
+Whereas innovative firms can be enumerated from the curated registries described above, no comparable register lists firms that do not innovate, and the obvious fallback — the CIS — cannot supply this group either. Eurostat itself observes that the survey provides almost no information about firms without innovation activities, which impedes the very comparison of "innovators versus non-innovators," and that the underlying decision of whether a firm innovated is to some extent subjective and liable to response bias, as enterprises may report no innovation simply to reduce the effort of responding. Non-innovator status was therefore established directly, through a structured expert reading of company websites. Eurostat
+To keep these negative labels theoretically disciplined, the coding scheme was anchored in the Oslo Manual — the OECD/Eurostat standard that also underpins the CIS, which was significantly restructured following the adoption of the Oslo Manual in 2018 — from which ten innovation dimensions were operationalized (Table 2). A panel of [five] experts with backgrounds in economics, innovation studies, and management [affiliations to be specified] independently examined each firm's web content and recorded, dimension by dimension, whether observable innovation cues were present: in-house or contracted R\&D, development of new or improved products or services, technological upgrading, intellectual-property activity, or participation in innovation-driven programmes. A firm was coded non-innovative when such cues were absent and its online presence pointed instead to conventional, established operations with no evidence of meaningful product or technological renewal. Coding was conducted independently before reconciliation; inter-rater agreement was quantified (Fleiss' κ = [value]) and the residual disagreements were resolved through structured deliberation until the panel reached consensus. 
+
+Like any expert judgment, this procedure carries a degree of subjectivity. That limitation, however, is shared by the CIS, whose innovation status is itself self-reported, seldom validated against external evidence, and — as noted — susceptible to reporting bias (Cirera \& Muzi, 2020; Rammer \& Es-Sadki, 2023). Two features of the present design mitigate the concern: each label rests on directly observable website evidence rather than unverifiable self-report, and classifications were settled collectively rather than by a single coder. The resulting separation of innovative from non-innovative firms is therefore considered sufficiently consistent and well-grounded to serve as the training and validation signal for the models developed below.
+
+Consolidating the registry-derived positive labels with the expert-assigned negative labels, and deduplicating records by business identity code (Y-tunnus), yielded a final corpus of [N] firms, each carrying a binary innovation label alongside its website text; the descriptive statistics are reported in Table 3. Figure 2 illustrates the qualitative basis of these labels through representative website excerpts. Firms labelled innovative foreground patent activity, proprietary or advanced technology, and research capability, whereas those labelled non-innovative present routine commercial offerings — for instance car-wash, fitness-equipment, or conventional accounting services — with no indication of technological or product renewal.
+
+The label was encoded as a dummy variable taking the value 1 for firms exhibiting innovative behaviour and 0 otherwise. The two classes were close to balanced, with non-innovative firms accounting for approximately [XX]\% of the sample. A departure from parity of this magnitude falls well short of the skew at which class imbalance distorts classifier behaviour: a ratio of about 10:1 ($\approx 90:10$) is a common rule-of-thumb threshold for concern (Gong \& Kim, 2017), and recent imbalanced-learning taxonomies reserve the "moderately" or "severely" imbalanced designations for ratios typically above 50:1 or even 100:1. No resampling or other corrective procedure was therefore applied.
+
+
+\subsubsection{4.2. Data processing}
+
+
+Consolidation also required a language-normalisation step. Because Finland is officially bilingual and many firms maintain English-language pages, the scraped corpus was linguistically heterogeneous, comprising Finnish, Swedish, and English text. Two considerations motivated normalising this material to a single language. First, large language models are trained overwhelmingly on English tokens³ and perform measurably better when operating in English than in other languages (Lai et al., 2023; Jin et al., 2024). Second — and with particular force for the present setting — this disadvantage is most acute for morphologically rich, agglutinative languages: Finnish is among the morphologically complex languages that require a greater number of tokens than English to convey the same meaning, producing inefficiencies in processing, a high subword "fertility" that correlates with a robust performance gap between agglutinative and fusional languages (Petrov et al., 2023; Ahia et al., 2023; Arnett \& Bergen, 2025). OECDTilastokeskus
+
+Given that Finnish is precisely such a language, all non-English content was translated into English. The source language of each page was first identified automatically, after which Finnish- and Swedish-language text was machine-translated using the DeepL API, while pages already authored in English were retained as written. Beyond aligning the input with the models' strongest language, this step standardised the corpus and suppressed the noise that mixed-language inputs would otherwise introduce. A manual inspection of a sample of the translations confirmed that the original meaning was preserved without material distortion.
+³ Tokens are the basic units a language model reads and produces. They commonly correspond to words, subwords, or individual characters, and represent a machine-oriented encoding of text rather than linguistic words as such.
+
+
+\subsubsection{4.3. Modeling pipeline}
+
+Because a language model can attend to only a bounded number of tokens at once, the length of the website texts was examined to confirm that documents would fit within the model's context window without truncation; the distributions of character, word, and token counts are summarised in Table 4. Contemporary models accommodate context windows ranging from a few thousand tokens to 128,000 or more, whereas the website texts analysed here were far shorter, averaging [XXX] tokens after cleaning. Even the longest documents therefore fit comfortably within the available context, and no truncation, chunking, or other length-reduction step was required. Notably, because the texts were normalised to English beforehand, these token counts reflect the lower subword fertility of English relative to Finnish, further easing any context-length constraint.
+The labelled corpus was then partitioned into training, validation, and test sets in proportions of approximately 80\%, 5\%, and 15\%, respectively. Stratified sampling was applied so that the innovative-to-non-innovative class ratio was preserved within each subset; this prevents the models from collapsing to majority-class prediction and ensures that the learned decision boundary reflects substantive textual patterns rather than the base rate.
+
+% --- Table 3: Innovators ---------------------------------------------------
+\begin{table}[h]
+\centering
+\caption{Summary statistics for the variable ``Innovators''.}
+\label{tab:innovators}
+\begin{tabular}{|l|p{6.2cm}|r|r|r|}
+\hline
+\textbf{Variable} & \textbf{Definition} & \textbf{Count} & \textbf{Mean} & \textbf{Std} \\
+\hline
+Innovators & 1 if the firm is a process or product innovator, 0 otherwise & [N] & [0.00] & [0.00] \\
+\hline
+\end{tabular}
+\end{table}
+
+\bigskip   % vertical gap so the two tables don't sit flush together
+
+% --- Table 4: Text length --------------------------------------------------
+\begin{table}[h]
+\centering
+\caption{Summary statistics for website text length.}
+\label{tab:textlength}
+\begin{tabular}{|l|p{5.4cm}|r|r|r|r|}
+\hline
+\textbf{Variable} & \textbf{Definition} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
+\hline
+\texttt{Char\_clean}  & Characters after text cleaning       & [..] & [..] & [..] & [..] \\
+\hline
+\texttt{Words\_clean} & Words after text cleaning            & [..] & [..] & [..] & [..] \\
+\hline
+\texttt{Tokens}       & Sub-word model tokens after cleaning & [..] & [..] & [..] & [..] \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{4.3. Modeling pipeline}
+
+Three modelling approaches were used to quantify firm innovation from website text, spanning a deliberate gradient of model complexity and task adaptation: a TF–IDF representation paired with a random forest classifier, large-language-model inference via direct prompting, and a fine-tuned large language model. The first serves as an interpretable benchmark. TF–IDF combined with conventional classifiers is the established workhorse of text-based innovation prediction (Kinne \& Lenz, 2021; Axenbeck \& Breithaupt, 2021; Daas \& van der Doef, 2021; Sõna et al., 2022), so retaining it allows the LLM-based methods to be assessed against a familiar reference point on two axes at once — predictive accuracy and the substantive interpretability of the features driving each prediction. The two LLM configurations differ chiefly in the degree of task adaptation: prompting leaves the model's parameters unchanged and relies on instructions alone, whereas fine-tuning adjusts the model to the labelled corpus. Taken together, the three methods trace a spectrum from a transparent but shallow lexical model to a heavily adapted neural one, each carrying distinct trade-offs for innovation measurement. Beyond classification performance, particular attention was directed to the evaluation protocol and to screening the Website Innovation Footprint (WIF) — the pattern of innovation cues a firm discloses online — as a separate test of whether the textual signal is sufficient to support reliable inference.
+
+\subsubsection{4.3.1. TF–IDF + random forest}
+
+Prompting denotes the specification of a task to a language model through natural-language instructions, such that the desired behaviour is elicited without recourse to gradient-based training (Liu et al., 2021). The viability of this paradigm derives from the parametric knowledge a model internalises during large-scale pretraining over heterogeneous corpora — encompassing web text, books, and scholarly publications — and from the subsequent alignment of that knowledge to instruction-following objectives (Brown et al., 2020; Raschka, 2024). Operationally, the instruction is decomposed into tokens and projected into a continuous embedding space, whereupon the model, conditioning on this representation, estimates a probability distribution over its vocabulary and generates the most likely continuation in an autoregressive fashion. This mode of use departs fundamentally from discriminative classifiers such as the random forest, which demand supervised fitting to labelled data prior to inference: a pretrained model can instead execute the target task in-context, attaining serviceable accuracy with no adjustment to its weights, contingent upon the prompt's success in activating the relevant latent competencies (Brown et al., 2020). The formulation of the prompt thus emerges as the principal determinant of classification quality.
+
+\subsubsection{4.3.1. TF–IDF + random forest}
+
+To furnish the prompt with a principled foundation, the ten Oslo-derived innovation dimensions in Table 2 were embedded directly into the instruction. Anchoring the model in this established taxonomy constrains its judgements to theoretically motivated criteria rather than arbitrary lexical associations, thereby improving the construct validity and auditability of the resulting classifications: a firm whose website content corresponds closely to one or more of these dimensions is designated innovative. A second prompt-engineering device — role-play, whereby the model is assigned a professional persona (for instance, "you are an expert financial analyst" or "you are a senior medical advisor") — was also examined. Role-play prompting has been reported to raise zero-shot⁴ accuracy in reasoning tasks (Kong et al., 2023); subsequent evidence, however, indicates that its benefits are markedly task- and model-dependent, and that persona assignment in system prompts does not, in general, improve performance relative to a no-persona control on objective, classification-style tasks of the kind addressed here (Zheng et al., 2024). The technique was therefore treated as an empirical question rather than a settled gain: it was incorporated into the prompt design and its effect on classification accuracy evaluated directly. Combining the Oslo-dimension grounding with a role-play persona, the initial prompt was formulated as follows: 
+
+
+
+% Bordered version. For a two-column journal template, change
+% \begin{table}...\end{table} to \begin{table*}...\end{table*} so it
+% spans the full page width. Adjust the p{} widths to fit your \textwidth.
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\caption{Selected Oslo dimensions.}
+\label{tab:oslo}
+\begin{tabular}{|p{3cm}|p{9cm}|c|}
+\hline
+\textbf{Dimension} & \textbf{Description} & \textbf{Abbrv.} \\
+\hline
+New or Improved Products or Services & Introduction of new or significantly improved goods or services within the enterprise. & O-1d \\
+\hline
+New or Improved Processes & Implementation of new or significantly improved production or service-delivery methods. & O-2d \\
+\hline
+Research and Experimental Development (R\&D) & The firm performed R\&D in-house or contracted it to other enterprises or public or private research organisations. & O-3d \\
+\hline
+Marketing and Brand Equity & The firm conducted market research or tests, launched advertising, or developed pricing mechanisms and product-placement methods for product innovations. & O-4d \\
+\hline
+Intellectual Property (IP) & The firm applied for patents, industrial designs, trademarks, or copyright, or held certifications or trade secrets. & O-5d \\
+\hline
+Employee Training and Skills Development & The firm trained personnel to use new software or equipment, or provided training relevant to implementing a product innovation. & O-6d \\
+\hline
+Software Development and Database Activities & The firm performed software development for new or improved business processes or products. & O-7d \\
+\hline
+Acquisition or Lease of Tangible Assets & The firm purchased machinery, equipment, or software based on new technology. & O-8d \\
+\hline
+Financing or Mergers & The firm engaged in financial strategies such as mergers, acquisitions, or the co-creation of goods and services. & O-9d \\
+\hline
+Cooperation or Partnerships & The firm participated in collaborations or partnerships with other companies, universities, or institutions. & O-10d \\
+\hline
+\end{tabular}
+
+\par\vspace{4pt}
+\parbox{13cm}{\footnotesize \textit{Note.} The ten dimensions are operationalised from the
+innovation activities defined in the Oslo Manual 2018 (4th ed.; OECD/Eurostat, 2018), which
+also underpins the Community Innovation Survey (CIS). While the CIS comprises a broader and
+more detailed set of items, the dimensions selected here capture its core innovation activities.}
+\end{table}
+
+
+You are a senior innovation analyst. Your task is to classify a company as
+"innovative" or "non-innovative" based solely on the website content provided.
+
+DEFINITION
+Following the Oslo Manual (OECD/Eurostat, 2018), a company is innovative if its
+website provides substantive evidence of one or more of the following activities:
+
+  O-1d   Introduced new or significantly improved products or services.
+  O-2d   Implemented new or significantly improved processes (production or
+         service-delivery methods).
+  O-3d   Conducted research and experimental development (R&D), in-house or
+         contracted to other enterprises or public/private research organisations.
+  O-4d   Undertook marketing or brand-equity activities tied to a product
+         innovation (market research or testing, an advertising launch, or new
+         pricing or product-placement methods).
+  O-5d   Engaged in intellectual-property activity (applied for patents,
+         industrial designs, trademarks, or copyright; held certifications or
+         trade secrets).
+  O-6d   Trained personnel to use new software or equipment, or to implement a
+         product innovation.
+  O-7d   Performed software development for new or improved business processes or
+         products.
+  O-8d   Acquired or leased tangible assets embodying new technology (machinery,
+         equipment, or software not previously used in the enterprise).
+  O-9d   Engaged in financing or mergers (mergers, acquisitions, or the
+         co-creation of goods and services with users).
+  O-10d  Participated in collaborations or partnerships with other companies,
+         universities, or other institutions.
+
+DECISION RULES
+1. Base your judgement only on the content provided. Do not use outside knowledge
+   or make assumptions about the company.
+2. Evidence must be quoted verbatim from the provided content. Do not paraphrase,
+   summarise, or invent text.
+3. Require evidence of a concrete activity. Generic marketing language alone
+   (e.g. "innovative", "cutting-edge", "state-of-the-art", "modern", "AI-driven")
+   does NOT qualify unless it is tied to a specific, verifiable activity matching
+   one of the dimensions above.
+4. A single well-evidenced dimension is sufficient to classify the company as
+   innovative. List every dimension for which qualifying evidence exists.
+5. If no statement provides substantive evidence for any dimension, classify the
+   company as "non-innovative".
+
+OUTPUT
+Return ONLY a valid JSON object, with no additional text, in exactly this format:
+
+{
+  "classification": "innovative" | "non-innovative",
+  "evidence": [
+    { "dimension": "O-1d", "quote": "<verbatim excerpt from the content>" }
+  ]
+}
+
+For a non-innovative company, "evidence" must be an empty array ([]).
+
+WEBSITE CONTENT:
+"""
+{website_content}
+"""
+
+
+The prompt described above was applied to the held-out test set to generate innovation predictions. For the prompting approach, the model employed was Anthropic's Claude Haiku 4.5, selected for its favourable price-to-quality ratio in high-volume classification. As specified in the prompt, every response was returned as a JSON object, allowing predictions to be parsed programmatically for the accuracy computations. Alongside the innovation label, the model was required to return the textual excerpt that substantiated its decision; a sample of these excerpts was subsequently verified against the source website content to detect hallucination, since language models can occasionally generate factually unsupported statements (Zhang et al., 2023).
+In addition to this holistic classification, a decomposed variant was evaluated in which the model was queried separately for each of the ten Oslo dimensions, and the per-dimension outputs were aggregated under a tunable decision threshold. The aim was to establish whether decomposing the task in this manner improves predictive accuracy relative to a single holistic judgement. Formally, the predicted label was obtained as:
+
+\begin{equation}
+\hat{y}_i(t) =
+\left\{
+\begin{array}{ll}
+1 & \text{if } \sum_{j=1}^{k} x_{ij} \ge t, \\
+0 & \text{otherwise.}
+\end{array}
+\right.
+\label{eq:threshold}
+\end{equation}
+
+where $x_{ij}\in\{0,1\}$ indicates whether company $i$ exhibits the $j$th Oslo dimension (1 if signalled on the website, 0 otherwise), $k=10$ is the number of dimensions, and $t\in\{1,\dots,k\}$ is the decision threshold. A company is classified as innovative when the number of signalled dimensions reaches or exceeds $t$, and non-innovative otherwise. The inner sum $\sum_{j=1}^{k} x_{ij}$ is precisely the company's Website Innovation Footprint (WIF); varying $t$ therefore traces the accuracy--coverage trade-off as the evidential bar for an ``innovative'' label is raised or lowered.
+
+\subsubsection{4.3.3. Fine-tuning}
+
+The approaches described so far rely on the general knowledge already encoded in a pretrained model, which is sufficient for many tasks. As a substantial literature documents, however, fine-tuning — adapting a model's weights to a task-specific dataset — can lift accuracy beyond what prompting alone achieves (Patil et al., 2023; Wu et al., 2023). Fine-tuning consists of continued training of the model on labelled, task-specific examples, during which its parameters are updated toward the target objective. The procedure proceeds in three stages: selection of the base model, construction of the training data, and training itself.
+
+For this study, the instruction-tuned Llama-3.2-3B-Instruct model was selected. At three billion parameters it is designed for applications requiring low-latency inference and limited computational resources, fitting comfortably on a single consumer-grade GPU, yet it remains capable enough for the reasoning and extraction demanded by the classification task; its 128,000-token context window far exceeds the length of the website texts analysed here. Despite its compact size, Meta reports that the 3B model outperforms comparably sized models such as Gemma 2 (2.6B) and Phi-3.5-mini on instruction following, summarisation, prompt rewriting, and tool use, and that it matches the larger Llama 3.1 8B on tool use while exceeding it on summarisation (Meta AI, 2024) — capabilities well aligned with the structured, evidence-extracting classification required here.
+
+Every model expects its inputs in a particular template, so the training data had to be formatted accordingly. Whereas some architectures are trained on simple instruction--input--output triples, the Llama~3 family---to which the selected model belongs---uses a role-delimited chat format in which system, user, and assistant turns are demarcated by dedicated special tokens (header markers such as \verb!<|start_header_id|>! and \verb!<|end_header_id|>!, together with an end-of-turn token \verb!<|eot_id|>!). Each labelled example was therefore cast into this template: the classification instruction together with the company's website content formed the user turn, and the target JSON label formed the assistant turn. The number of parameters to update during fine-tuning was the next consideration. Updating all of the model's weights (full fine-tuning) was infeasible under the available GPU memory and time budget, so a parameter-efficient alternative, Low-Rank Adaptation (LoRA), was adopted. Rather than modifying a pretrained weight matrix $W \in \mathbb{R}^{d \times k}$ directly, LoRA keeps $W$ frozen and learns a low-rank update $\Delta W = BA$, where $B \in \mathbb{R}^{d \times r}$ and $A \in \mathbb{R}^{r \times k}$ with rank $r \ll \min(d,k)$; only the much smaller matrices $A$ and $B$ are trained, reducing the number of trainable parameters by orders of magnitude while largely preserving task performance \citep{hu2021lora}. Under this configuration, [N] trainable weights were optimised, as reported in Table~\ref{tab:lora}.
+
+The number of parameters to update during fine-tuning was the next consideration. Updating all of the model's weights (full fine-tuning) was infeasible under the available GPU memory and time budget, so a parameter- and memory-efficient alternative---Quantized Low-Rank Adaptation (QLoRA)---was adopted \citep{dettmers2023qlora}. QLoRA augments Low-Rank Adaptation \citep[LoRA;][]{hu2021lora} with aggressive quantization of the frozen base model. Under LoRA, a pretrained weight matrix $W \in \mathbb{R}^{d \times k}$ is held fixed and a low-rank update $\Delta W = BA$ is learned, where $B \in \mathbb{R}^{d \times r}$ and $A \in \mathbb{R}^{r \times k}$ with rank $r \ll \min(d,k)$; only the small matrices $A$ and $B$ are trained, reducing the number of trainable parameters by orders of magnitude. QLoRA additionally stores the frozen weights $W$ in a 4-bit representation (the 4-bit NormalFloat data type) and back-propagates gradients through these quantized weights into the higher-precision adapters, enabling a model of this size to be fine-tuned on a single consumer-grade GPU with negligible loss in task performance relative to 16-bit fine-tuning \citep{dettmers2023qlora}. Accordingly, the base model was loaded in 4-bit precision and [N] trainable adapter weights were optimised, as reported in Table~\ref{tab:lora}.
+
+
+A full hyperparameter sweep is computationally expensive, so the search was confined to the two settings most consequential for fine-tuning outcomes: the learning rate and the number of training epochs. Learning rates were held to small values, which limits the magnitude of each weight update and promotes more stable convergence (Masters & Luschi, 2018). The epoch budget was constrained for a complementary reason. Fine-tuning a pretrained model for only a few epochs — typically one to five — is standard practice, because prolonged adaptation tends to overwrite the representations acquired during pretraining and erode the model's general capabilities, a phenomenon known as catastrophic forgetting (Kirkpatrick et al., 2017; Luo et al., 2023). Restricting the number of epochs therefore preserves the generalisation with which the base model was originally endowed, while still permitting sufficient adaptation to the target task.
+
+
+\subsubsection{4.3.4. Evaluations}
+
+
+
 
 
 \paragraph{}
